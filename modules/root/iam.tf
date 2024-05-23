@@ -16,14 +16,6 @@ resource "google_project_iam_member" "dataproc_editor" {
   member  = "serviceAccount:${google_service_account.tenant_data_access.email}"
 }
 
-resource "google_compute_subnetwork_iam_member" "vpc_subnetwork_user" {
-  count      = var.enable_dataproc_network ? 1 : 0
-  project    = var.data_plane_project
-  subnetwork = google_compute_subnetwork.dataproc_subnet[0].name
-  role       = "roles/compute.networkUser"
-  member     = "serviceAccount:${google_service_account.tenant_data_access.email}"
-}
-
 resource "google_project_iam_member" "bigquery_job_creator" {
   project = var.data_plane_project
   role    = "roles/bigquery.jobUser"

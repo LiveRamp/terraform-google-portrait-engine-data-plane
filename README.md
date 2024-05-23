@@ -6,6 +6,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
+| <a name="provider_compute"></a> [compute](#provider\_compute) | n/a |
 | <a name="provider_google"></a> [google](#provider\_google) | n/a |
 | <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | n/a |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
@@ -14,9 +15,8 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cloud_router"></a> [cloud\_router](#module\_cloud\_router) | terraform-google-modules/cloud-router/google | ~> 6.0 |
-| <a name="module_dataproc-firewall-rules"></a> [dataproc-firewall-rules](#module\_dataproc-firewall-rules) | terraform-google-modules/network/google//modules/firewall-rules | 6.0.1 |
 | <a name="module_kms_crypto_key-iam-bindings"></a> [kms\_crypto\_key-iam-bindings](#module\_kms\_crypto\_key-iam-bindings) | terraform-google-modules/iam/google//modules/kms_crypto_keys_iam | n/a |
+| <a name="module_network"></a> [network](#module\_network) | ./modules/network | n/a |
 
 ## Resources
 
@@ -26,12 +26,7 @@ No requirements.
 | [google-beta_google_storage_bucket.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_storage_bucket) | resource |
 | [google-beta_google_storage_bucket.tenant_output_bucket](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_storage_bucket) | resource |
 | [google_bigquery_dataset.tenant_dataset](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_dataset) | resource |
-| [google_compute_address.cloud_nat_static_ip_address](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
-| [google_compute_firewall.allow_idapi_egress](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
-| [google_compute_firewall.allow_metastore_egress](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_network.vpc_network](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network) | resource |
-| [google_compute_subnetwork.dataproc_subnet](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork) | resource |
-| [google_compute_subnetwork_iam_member.vpc_subnetwork_user](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork_iam_member) | resource |
 | [google_kms_crypto_key.tenant_crypto_key](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key) | resource |
 | [google_kms_key_ring.kms](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_key_ring) | resource |
 | [google_project_iam_member.allow_bq_connector_push_down](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
@@ -47,6 +42,7 @@ No requirements.
 | [google_storage_bucket_iam_policy.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
 | [google_storage_bucket_iam_policy.tenant_output_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_policy) | resource |
 | [random_id.generator](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [compute_compute.vpc_network](https://registry.terraform.io/providers/hashicorp/compute/latest/docs/data-sources/compute) | data source |
 | [google_iam_policy.tenant_build_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
 | [google_iam_policy.tenant_input_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
 | [google_iam_policy.tenant_output_bucket](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/iam_policy) | data source |
@@ -65,7 +61,6 @@ No requirements.
 | <a name="input_data_retention_period_days"></a> [data\_retention\_period\_days](#input\_data\_retention\_period\_days) | The number of days this customers data will be stored before its automatically deleted | `number` | `0` | no |
 | <a name="input_data_viewers"></a> [data\_viewers](#input\_data\_viewers) | The users, groups & service accounts that should have read only access to this customers data | <pre>object({<br>    service_accounts = list(string)<br>    groups           = list(string)<br>    users            = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_dataproc_subnet_ip4_cidr"></a> [dataproc\_subnet\_ip4\_cidr](#input\_dataproc\_subnet\_ip4\_cidr) | Subnet used for Dataproc clusters | `string` | n/a | yes |
-| <a name="input_enable_dataproc_network"></a> [enable\_dataproc\_network](#input\_enable\_dataproc\_network) | Configure network bits for Dataproc - VPC, firewall rules etc | `bool` | `true` | no |
 | <a name="input_enable_kms"></a> [enable\_kms](#input\_enable\_kms) | Configure KMS to encrypt build, input and output buckets | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment this infrastructure is supported (eg.: dev, staging or prod) | `string` | n/a | yes |
 | <a name="input_gcp_region"></a> [gcp\_region](#input\_gcp\_region) | The GCP region to be used | `string` | n/a | yes |
@@ -81,6 +76,7 @@ No requirements.
 | <a name="input_storage_location"></a> [storage\_location](#input\_storage\_location) | The storage location for BigQuery and GCS. | `string` | n/a | yes |
 | <a name="input_tenant_orchestration_sa"></a> [tenant\_orchestration\_sa](#input\_tenant\_orchestration\_sa) | Tenant Orchestration ServiceAccount for remote execution | `string` | n/a | yes |
 | <a name="input_tenant_service_account_name"></a> [tenant\_service\_account\_name](#input\_tenant\_service\_account\_name) | Service Account name | `string` | `""` | no |
+| <a name="input_vpc_network_name"></a> [vpc\_network\_name](#input\_vpc\_network\_name) | The network to connect the data-plane to, if not specified, module will provision a dedicated one | `bool` | `null` | no |
 
 ## Outputs
 
@@ -91,3 +87,4 @@ No requirements.
 | <a name="output_output_bucket_name"></a> [output\_bucket\_name](#output\_output\_bucket\_name) | The name of the GCS bucket that will be used to store the output files |
 | <a name="output_tenant_bigquery_dataset_name"></a> [tenant\_bigquery\_dataset\_name](#output\_tenant\_bigquery\_dataset\_name) | The name of the BigQuery dataset that will be used to store the tenant data |
 | <a name="output_tenant_data_access_svc_account"></a> [tenant\_data\_access\_svc\_account](#output\_tenant\_data\_access\_svc\_account) | The service account object that will be used to access the tenant data |
+| <a name="output_vpc_network_name"></a> [vpc\_network\_name](#output\_vpc\_network\_name) | The name of the VPC network |
