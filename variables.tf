@@ -28,9 +28,14 @@ variable "data_plane_project" {
   description = "The GCP project in which customer data will be stored."
 }
 
+variable "bigquery_location" {
+  type        = string
+  description = "The storage location for BigQuery."
+}
+
 variable "storage_location" {
   type        = string
-  description = "The storage location for BigQuery and GCS."
+  description = "The storage location for GCS."
 }
 
 variable "gcp_region" {

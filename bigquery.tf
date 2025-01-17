@@ -5,7 +5,7 @@ locals {
 
 resource "google_bigquery_connection" "bq_spark_connection" {
   connection_id = "bq-spark-conn-${lower(var.organisation_id)}-${lower(var.country_code)}"
-  location      = var.storage_location
+  location      = var.bigquery_location
   description   = "BQ spark connection for ML Matching"
   cloud_resource {
   }
@@ -24,7 +24,7 @@ resource "google_bigquery_dataset" "tenant_dataset" {
   dataset_id    = local.bigquery_dataset_name
   friendly_name = "${title(var.name)} ${upper(var.country_code)} dataset"
   description   = "This dataset is for ${title(var.name)} ${upper(var.country_code)}"
-  location      = var.storage_location
+  location      = var.bigquery_location
 
   dynamic "default_encryption_configuration" {
     for_each = var.enable_kms ? [google_kms_crypto_key.tenant_crypto_key[0].id] : []
